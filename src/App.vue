@@ -6,12 +6,14 @@
       <div class="row g-3">
         <div class="col-md-3 col-sm-6" v-for="card in summaryCards" :key="card.label">
           <div class="summary-card text-left">
-            <div class="icon mb-2" v-html="card.icon"></div>
+            <div class="icon mb-2" v-html="card.icon" style="font-size: 2rem;"></div>
             <div class="fw-bold">
               <h4 style="font-weight: bold">{{ card.label }}</h4>
             </div>
             <div class="fs-5 mt-1">
-              <strong>{{ card.total }} RON</strong>
+              <h1>
+                <strong>{{ card.total }} RON</strong>
+              </h1>
             </div>
           </div>
         </div>
@@ -76,16 +78,17 @@
       </div>
     </div>
 
-    <br /><br />
-
     <div class="card mx-5 mt-4 shadow-sm border-0">
-      <div class="card-body d-flex justify-content-between">
-        <h4 class="fw-bold mb-0">📋 Istoric Cheltuieli</h4>
-        <div class="d-flex gap-2">
+      <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <h4 class="fw-bold mb-0 d-flex align-items-center">
+          📋 <span class="ms-2">Istoric Cheltuieli</span>
+        </h4>
+
+        <div class="d-flex flex-wrap gap-2 justify-content-end">
           <select
             class="form-select form-select-sm"
             v-model="selectedCategory"
-            style="width: 160px"
+            style="min-width: 160px"
           >
             <option value="">Toate categoriile</option>
             <option value="Mancare">Mancare</option>
@@ -93,16 +96,15 @@
             <option value="Divertisment">Divertisment</option>
           </select>
 
-          <select class="form-select form-select-sm" v-model="sortType" style="width: 150px">
+          <select class="form-select form-select-sm" v-model="sortType" style="min-width: 170px">
             <option value="data-desc">Sorteaza dupa data desc.</option>
-            <option value="data-asd">Sorteaza dupa data asc.</option>
+            <option value="data-asc">Sorteaza dupa data asc.</option>
             <option value="suma-desc">Sorteaza dupa suma desc.</option>
             <option value="suma-asc">Sorteaza dupa suma asc.</option>
           </select>
         </div>
       </div>
-
-      <div class="card-body">
+      <div class="card-body table-responsive">
         <table class="table table-hover ml-3 mr-3">
           <thead class="table-light">
             <tr>
@@ -130,11 +132,11 @@
               <td>{{ formatDate(item.data) }}</td>
               <td class="text-center">
                 <button
-                  class="btn btn-sm btn-outline-danger"
+                  class="btn btn-sm btn-danger"
                   @click="stergeCheltuiala(item.id)"
                   title="Sterge cheltuiala"
                 >
-                  Sterge
+                  🗑️
                 </button>
               </td>
             </tr>
@@ -151,10 +153,10 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import {useToast} from 'vue-toast-notification';
-import 'vue-toast-notification/dist/theme-sugar.css';
+import { useToast } from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-sugar.css'
 
-const $toast = useToast();
+const $toast = useToast()
 const denumire = ref('')
 const suma = ref(null)
 const categorie = ref('')
@@ -194,7 +196,7 @@ function adaugaCheltuiala() {
   listaTotalCheltuieli.value.push(newItem)
   localStorage.setItem('cheltuieli', JSON.stringify(listaTotalCheltuieli.value))
 
-  $toast.success('Cheltuiala a fost adaugata cu succes!');
+  $toast.success('Cheltuiala a fost adaugata cu succes!')
   showErrors.value = false
 
   denumire.value = ''
@@ -206,7 +208,7 @@ function adaugaCheltuiala() {
 function stergeCheltuiala(id) {
   listaTotalCheltuieli.value = listaTotalCheltuieli.value.filter((item) => item.id !== id)
   localStorage.setItem('cheltuieli', JSON.stringify(listaTotalCheltuieli.value))
-  $toast.info('Cheltuiala a fost stearsa cu succes!');
+  $toast.info('Cheltuiala a fost stearsa cu succes!')
 }
 
 function formatDate(dateStr) {
@@ -278,7 +280,7 @@ function categoryIcon(categorie) {
 .app {
   background-color: #eeeeee;
   min-height: 100vh;
-  padding-top: 40px;
+  padding-top: 10px;
 }
 
 .summary-card {
@@ -305,5 +307,27 @@ function categoryIcon(categorie) {
 .card {
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.btn-danger {
+  background-color: #cc0f1f !important;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background-color: #f9fafb;
+  color: #333;
+  font-weight: 600;
+}
+
+.table th,
+.table td {
+  padding: 12px 16px;
+  vertical-align: middle;
+  border-bottom: 1px solid #e9ecef;
 }
 </style>
