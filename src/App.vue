@@ -6,7 +6,7 @@
       <div class="row g-3">
         <div class="col-md-3 col-sm-6" v-for="card in summaryCards" :key="card.label">
           <div class="summary-card text-left">
-            <div class="icon mb-2" v-html="card.icon" style="font-size: 2rem;"></div>
+            <div class="icon mb-2" v-html="card.icon" style="font-size: 2rem"></div>
             <div class="fw-bold">
               <h4 style="font-weight: bold">{{ card.label }}</h4>
             </div>
